@@ -5,7 +5,7 @@
 
   export default defineConfig({
     plugins: [react()],
-    base: "/https://github.com/dattadevi/AdmissionPortalWebsite.github.io/",
+    base: "/AdmissionPortalWebsite.github.io//",
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
       alias: {
