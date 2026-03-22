@@ -1,17 +1,14 @@
-// components/ar/AREntry.tsx
 import { useState } from 'react';
+import { QRCodeCanvas } from 'qrcode.react';
 import { Button } from '../ui/button';
-import { Card, CardContent } from '../ui/card';
 import {
   Smartphone,
   Monitor,
-  QrCode,
   ArrowLeft,
   Glasses,
   Hand,
   RotateCcw,
   ZoomIn,
-  Move,
   Sparkles,
 } from 'lucide-react';
 
@@ -22,134 +19,141 @@ type AREntryProps = {
 };
 
 export function AREntry({ onStartAR }: AREntryProps) {
-  const [selectedMode, setSelectedMode] = useState<ARMode>(null);
+  const [selectedMode, setSelectedMode] = useState<ARMode>('markerless');
+  const mobileUrl = 'https://dattadevi.github.io/AdmissionPortalWebsite.github.io/#/ar-tour';
 
   return (
-    <div className="fixed inset-0 z-50 bg-gradient-to-br from-indigo-950 via-purple-950 to-slate-950 flex items-center justify-center p-4">
-      {/* Animated background elements */}
+    // FORCED DARK BACKGROUND WITH INLINE STYLE
+    <div 
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 overflow-y-auto"
+      style={{ backgroundColor: '#0f172a' }} // Strict Slate-900
+    >
+      {/* Background glow effects */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl animate-pulse delay-1000" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border border-purple-500/5 rounded-full" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border border-purple-500/10 rounded-full" />
+        <div 
+          className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-[100px] animate-pulse" 
+          style={{ backgroundColor: 'rgba(147, 51, 234, 0.2)' }} 
+        />
+        <div 
+          className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full blur-[100px] animate-pulse delay-1000" 
+          style={{ backgroundColor: 'rgba(236, 72, 153, 0.2)' }} 
+        />
       </div>
 
-      <div className="relative z-10 w-full max-w-2xl">
+      <div className="relative z-10 w-full max-w-4xl py-10">
         {/* Header */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl mb-4 shadow-2xl shadow-purple-500/30">
+        <div className="text-center mb-10">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-purple-600 to-pink-600 rounded-2xl mb-6 shadow-lg">
             <Glasses className="h-10 w-10 text-white" />
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
+          <h1 
+            className="text-3xl md:text-5xl font-bold mb-4 tracking-tight"
+            style={{ color: '#ffffff' }}
+          >
             AR Department Tour
           </h1>
-          <p className="text-purple-200 text-lg">
+          <p 
+            className="text-lg"
+            style={{ color: '#cbd5e1' }}
+          >
             Choose how you want to explore our campus
           </p>
         </div>
 
-        {/* Mode Selection */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          {/* Marker-based AR */}
-          <Card
-            className={`cursor-pointer transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 border-2 bg-white/5 backdrop-blur-sm ${
-              selectedMode === 'marker'
-                ? 'border-purple-400 shadow-2xl shadow-purple-500/20 bg-purple-500/10'
-                : 'border-white/10 hover:border-purple-400/50'
-            }`}
-            onClick={() => setSelectedMode('marker')}
+        {/* The Two Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+          
+          {/* LEFT CARD: MOBILE QR SCANNER */}
+          <div 
+            className="rounded-2xl p-8 text-center flex flex-col items-center justify-center shadow-xl backdrop-blur-md"
+            style={{ 
+              backgroundColor: 'rgba(30, 41, 59, 0.8)', 
+              border: '1px solid #334155' 
+            }}
           >
-            <CardContent className="p-6 text-center">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl mb-4">
-                <QrCode className="h-8 w-8 text-white" />
-              </div>
-              <h3 className="text-xl font-bold text-white mb-2">Marker-Based AR</h3>
-              <p className="text-purple-200 text-sm mb-4">
-                Scan QR codes or markers placed around campus to view 3D models and information
-              </p>
-              <div className="space-y-2 text-left">
-                <div className="flex items-center gap-2 text-purple-300 text-xs">
-                  <Smartphone className="h-3 w-3" />
-                  <span>Requires camera access</span>
-                </div>
-                <div className="flex items-center gap-2 text-purple-300 text-xs">
-                  <QrCode className="h-3 w-3" />
-                  <span>Scan printed markers</span>
-                </div>
-                <div className="flex items-center gap-2 text-purple-300 text-xs">
-                  <Sparkles className="h-3 w-3" />
-                  <span>Interactive 3D models</span>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl mb-6 shadow-md">
+              <Smartphone className="h-8 w-8 text-white" />
+            </div>
+            <h3 className="text-2xl font-bold mb-3" style={{ color: '#ffffff' }}>Experience on Mobile</h3>
+            <p className="text-sm mb-8 px-4" style={{ color: '#94a3b8' }}>
+              Scan this QR code with your phone's camera to open the AR Tour directly on your mobile device.
+            </p>
+            
+            {/* QR Code */}
+            <div className="p-4 rounded-2xl shadow-xl inline-block" style={{ backgroundColor: '#ffffff' }}>
+              <QRCodeCanvas 
+                value={mobileUrl} 
+                size={160} 
+                bgColor="#ffffff" 
+                fgColor="#000000" 
+                level="H" 
+                includeMargin={false} 
+              />
+            </div>
+          </div>
 
-          {/* Markerless AR */}
-          <Card
-            className={`cursor-pointer transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 border-2 bg-white/5 backdrop-blur-sm ${
-              selectedMode === 'markerless'
-                ? 'border-pink-400 shadow-2xl shadow-pink-500/20 bg-pink-500/10'
-                : 'border-white/10 hover:border-pink-400/50'
+          {/* RIGHT CARD: DESKTOP 3D VIEWER */}
+          <div
+            className={`cursor-pointer transition-all duration-300 rounded-2xl p-8 text-center flex flex-col items-center justify-center backdrop-blur-md ${
+              selectedMode === 'markerless' ? 'scale-[1.02] shadow-2xl' : ''
             }`}
+            style={{ 
+              backgroundColor: selectedMode === 'markerless' ? 'rgba(30, 41, 59, 0.95)' : 'rgba(30, 41, 59, 0.5)',
+              border: selectedMode === 'markerless' ? '2px solid #ec4899' : '1px solid #334155',
+              boxShadow: selectedMode === 'markerless' ? '0 0 20px rgba(236, 72, 153, 0.2)' : 'none'
+            }}
             onClick={() => setSelectedMode('markerless')}
           >
-            <CardContent className="p-6 text-center">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl mb-4">
-                <Monitor className="h-8 w-8 text-white" />
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl mb-6 shadow-md">
+              <Monitor className="h-8 w-8 text-white" />
+            </div>
+            <h3 className="text-2xl font-bold mb-3" style={{ color: '#ffffff' }}>Desktop 3D Viewer</h3>
+            <p className="text-sm mb-8 px-4" style={{ color: '#94a3b8' }}>
+              Explore interactive 3D models of campus facilities right here in your computer browser.
+            </p>
+            
+            <div 
+              className="space-y-4 text-left w-full max-w-[220px] mx-auto p-5 rounded-xl"
+              style={{ backgroundColor: 'rgba(15, 23, 42, 0.8)', border: '1px solid #334155' }}
+            >
+              <div className="flex items-center gap-3">
+                <RotateCcw className="h-5 w-5" style={{ color: '#f472b6' }} />
+                <span className="font-medium" style={{ color: '#e2e8f0' }}>360° rotation</span>
               </div>
-              <h3 className="text-xl font-bold text-white mb-2">3D Model Viewer</h3>
-              <p className="text-purple-200 text-sm mb-4">
-                Explore interactive 3D models of campus facilities directly in your browser
-              </p>
-              <div className="space-y-2 text-left">
-                <div className="flex items-center gap-2 text-purple-300 text-xs">
-                  <RotateCcw className="h-3 w-3" />
-                  <span>360° rotation</span>
-                </div>
-                <div className="flex items-center gap-2 text-purple-300 text-xs">
-                  <ZoomIn className="h-3 w-3" />
-                  <span>Zoom in/out</span>
-                </div>
-                <div className="flex items-center gap-2 text-purple-300 text-xs">
-                  <Hand className="h-3 w-3" />
-                  <span>Click hotspots for info</span>
-                </div>
+              <div className="flex items-center gap-3">
+                <ZoomIn className="h-5 w-5" style={{ color: '#f472b6' }} />
+                <span className="font-medium" style={{ color: '#e2e8f0' }}>Scroll to zoom</span>
               </div>
-            </CardContent>
-          </Card>
+              <div className="flex items-center gap-3">
+                <Hand className="h-5 w-5" style={{ color: '#f472b6' }} />
+                <span className="font-medium" style={{ color: '#e2e8f0' }}>Click hotspots</span>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <Button
             size="lg"
-            className="w-full sm:w-auto bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-xl shadow-purple-500/25 px-8"
+            className="w-full sm:w-auto min-w-[260px] h-14 text-lg bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white shadow-xl border-0 rounded-xl"
             disabled={!selectedMode}
             onClick={() => selectedMode && onStartAR(selectedMode)}
           >
-            <Sparkles className="h-5 w-5 mr-2" />
-            {selectedMode
-              ? `Start ${selectedMode === 'marker' ? 'Marker AR' : '3D Viewer'}`
-              : 'Select a Mode'}
+            <Sparkles className="h-6 w-6 mr-2" />
+            Start 3D Viewer
           </Button>
+
           <Button
             size="lg"
             variant="ghost"
-            className="w-full sm:w-auto text-purple-200 hover:text-white hover:bg-white/10"
+            className="w-full sm:w-auto h-14 text-lg rounded-xl hover:bg-slate-800"
+            style={{ color: '#cbd5e1' }}
             onClick={() => onStartAR(null)}
           >
-            <ArrowLeft className="h-5 w-5 mr-2" />
+            <ArrowLeft className="h-6 w-6 mr-2" />
             Go Back
           </Button>
-        </div>
-
-        {/* Instructions */}
-        <div className="mt-8 text-center">
-          <p className="text-purple-400 text-xs">
-            For the best experience, use a modern browser with WebGL support.
-            <br />
-            Mobile devices support touch gestures for 3D interaction.
-          </p>
         </div>
       </div>
     </div>
